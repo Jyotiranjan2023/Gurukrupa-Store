@@ -1,12 +1,9 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 import WhatsAppButton from "../components/WhatsAppButton";
-
-// product images
-import rudrakshaImg from "../assets/Rudraksha.jpg";
-import malaImg from "../assets/Rudraksha Mala.jpeg";
-import hibiscusImg from "../assets/Dry Hibiscus flower.jpeg";
-import dryFlowerImg from "../assets/Dry flower.jpeg";
+import { db } from "../firebase/firebaseConfig";
+import { collection, getDocs } from "firebase/firestore";
 
 // baba image
 import babaImg from "../assets/Baba.jpeg";
@@ -18,36 +15,32 @@ function Home() {
 
   const navigate = useNavigate();
 
-  const featuredProducts = [
-    {
-      id: 1,
-      name: "Rudraksha",
-      category: "Rudraksha",
-      image: rudrakshaImg,
-      description: "Enhances spiritual growth, reduces stress, and brings positive energy."
-    },
-    {
-      id: 2,
-      name: "Rudraksha Mala",
-      category: "Rudraksha",
-      image: malaImg,
-      description: "Used for meditation and chanting, improves focus and inner peace."
-    },
-    {
-      id: 3,
-      name: "Dry Hibiscus Flower",
-      category: "Flowers",
-      image: hibiscusImg,
-      description: "Supports heart health and improves natural body detox."
-    },
-    {
-      id: 4,
-      name: "Dry Flower",
-      category: "Flowers",
-      image: dryFlowerImg,
-      description: "Used in pooja rituals to create a calm and spiritual environment."
+  // 🔥 Firebase state
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(db, "products"));
+
+      const productList = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+
+      // 👉 only 4 for home
+      setProducts(productList.slice(0, 4));
+
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
 
   return (
     <div>
@@ -131,8 +124,6 @@ function Home() {
             Herbal Products
           </div>
 
-          
-
           <div
             onClick={() => navigate("/products")}
             className="bg-orange-100 p-6 text-center rounded-lg shadow hover:scale-105 transition cursor-pointer"
@@ -143,17 +134,21 @@ function Home() {
         </div>
       </section>
 
-      {/* FEATURED PRODUCTS */}
+      {/* FEATURED PRODUCTS (🔥 NOW FROM FIREBASE) */}
       <section className="p-8">
         <h2 className="text-2xl font-bold mb-6 text-orange-600">
           Featured Products
         </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {featuredProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
+        {loading ? (
+          <p>Loading products...</p>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {products.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        )}
       </section>
 
       {/* ABOUT SECTION */}
@@ -177,9 +172,9 @@ function Home() {
             Gurukrupa Enterprises
           </h2>
 
-          <p className="text-sm md:text-base text-gray-500 mt-1 font-bold">
-  Dr. Baba Mahanta Mohan Giri (Ayurvedic)
-</p>
+          <p className="text-sm md:text-base text-gray-500 mt-1 font-semibold">
+            With the blessings of Dr. Baba Mahanta Mohan Giri (Ayurvedic)
+          </p>
 
           <p className="mt-4 text-gray-700 max-w-2xl mx-auto text-sm md:text-base">
             We provide authentic spiritual and Ayurvedic products including Rudraksha,
@@ -190,7 +185,7 @@ function Home() {
         </div>
       </section>
 
-      {/* FLOATING WHATSAPP BUTTON */}
+      {/* WHATSAPP BUTTON */}
       <WhatsAppButton />
 
     </div>

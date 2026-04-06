@@ -21,7 +21,7 @@ function ProductCard({ product }) {
 
       {/* Image */}
       <img
-        src={product.image}
+        src={product.imageUrl}
         alt={product.name}
         className="w-full h-48 object-cover rounded"
       />
