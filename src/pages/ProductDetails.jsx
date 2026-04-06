@@ -4,7 +4,7 @@ function ProductDetails() {
   const location = useLocation();
   const product = location.state;
 
-  const phoneNumber = "919876543210"; // replace
+  const phoneNumber = "919876543210"; // replace with your number
 
   const handleWhatsApp = () => {
     const message = `Hello, I want to buy ${product.name}`;
@@ -24,7 +24,7 @@ function ProductDetails() {
         {/* LEFT: IMAGE */}
         <div>
           <img
-            src={product.image}
+            src={product.imageUrl}  // ✅ FIXED HERE
             alt={product.name}
             className="w-full h-80 object-cover rounded-xl shadow-md"
           />
@@ -45,16 +45,23 @@ function ProductDetails() {
             {product.description}
           </p>
 
-          {/* Benefits Section */}
+          {/* ✅ DYNAMIC BENEFITS */}
           <div className="mt-6 bg-orange-50 p-4 rounded-lg">
             <h3 className="font-semibold text-orange-600 mb-2">
               Benefits
             </h3>
-            <ul className="list-disc pl-5 text-gray-700 text-sm">
-              <li>Enhances positivity and spiritual growth</li>
-              <li>Supports mental peace and focus</li>
-              <li>Ideal for daily rituals and meditation</li>
-            </ul>
+
+            {product.benefits && product.benefits.length > 0 ? (
+              <ul className="list-disc pl-5 text-gray-700 text-sm">
+                {product.benefits.map((item, index) => (
+                  <li key={index}>{item}</li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-gray-500 text-sm">
+                No benefits available
+              </p>
+            )}
           </div>
 
           {/* WhatsApp CTA */}

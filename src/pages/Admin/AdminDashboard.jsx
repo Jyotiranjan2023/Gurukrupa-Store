@@ -60,12 +60,14 @@ function AdminDashboard() {
 
             <div className="flex justify-between mt-3">
 
+              
+
               <button
-                onClick={() => navigate(`/admin/edit/${product.id}`)}
-                className="bg-blue-500 text-white px-3 py-1 rounded"
-              >
-                Edit
-              </button>
+           onClick={() => navigate(`/admin/edit/${product.id}`)}
+           className="bg-yellow-500 text-white px-3 py-1 rounded"
+          >
+        Edit
+     </button>
 
               <button
                 onClick={() => handleDelete(product.id)}
