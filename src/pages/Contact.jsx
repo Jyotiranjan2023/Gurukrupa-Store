@@ -40,7 +40,7 @@ Message: ${form.message}`;
           We are dedicated to quality, purity, and customer satisfaction.
         </p>
 
-        <p className="mb-2">📍 Plot No. 368, Lane-3, Sector-5</p>
+        <p className="mb-2">📍 Plot No. 368, Lane-2, Sector-5</p>
         <p className="mb-2">Niladri Vihar, Sailashree Vihar</p>
         <p className="mb-2">Bhubaneswar, Odisha - 751021</p>
 

@@ -4,7 +4,7 @@ function ProductDetails() {
   const location = useLocation();
   const product = location.state;
 
-  const phoneNumber = "919876543210"; // replace with your number
+  const phoneNumber = "919861955811"; // replace with your number
 
   const handleWhatsApp = () => {
     const message = `Hello, I want to buy ${product.name}`;
